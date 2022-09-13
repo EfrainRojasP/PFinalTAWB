@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lectura del nodo</title>
+</head>
+<body>
+    <form action="">
+        <fieldset>
+            <legend>Lectura</legend>
+            <label for="condLuz">Condicion de luz</label>
+            <input required type="number" name="condLuz" id="condLuz" step="0.01"><br>
+            <label for="humedad">Humedad</label>
+            <input required type="number" name="humedad" id="humedad" step="0.01"><br>
+            <label for="temp">Temperatura</label>
+            <input required type="number" name="temp" id="temp" step="0.01"><br>
+            <label for="duraAct">Duracion de actividad</label>
+            <input required type="number" name="duraAct" id="duraAct" step="0.01"><br>
+            <label for="espacio">Espacio</label>
+            <select required name="espacio" id="espacio">
+                <option value=""></option>
+            </select><br>
+            <div id="info"></div>
+            <button type="submit">Agregar lectura</button>
+        </fieldset>
+    </form>
+</body>
+</html>

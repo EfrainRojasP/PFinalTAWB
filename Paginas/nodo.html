@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insertar nodo</title>
+</head>
+<body>
+    <form action="">
+        <fieldset>
+            <legend>Agregar nodo</legend>
+            <label for="rangoNodo">Rango del nodo</label>
+            <input required type="number" name="rangoNodo" id="rangoNodo" min="1" max="10"><br>
+            <label for="actividadNodo">Actividad del nodo</label>
+            <select required name="actividadNodo" id="actividadNodo">
+                <option value=""></option>
+            </select>
+            <button type="submit" id="btnAgreNodo">Agregar Nodo</button>
+        </fieldset>
+    </form>
+    <script src="./JS/Cargadores/CargarActividadNodo.js"></script>
+    <script src="./JS/Peticiones/AgragarNodo.js"></script>
+</body>
+</html>
