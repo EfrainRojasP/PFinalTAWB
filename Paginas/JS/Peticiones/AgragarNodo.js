@@ -13,8 +13,7 @@ async function fetchInsertarNodo(obj) {
 
 function objNodo() {
     return{
-        rangoNodo: parseInt(document.getElementById("rangoNodo").value),
-        activiadad: document.getElementById("actividadNodo").selectedIndex
+        rangoNodo: parseFloat(document.getElementById("rangoNodo").value)
     };
 }
 
