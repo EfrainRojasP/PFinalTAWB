@@ -2,19 +2,17 @@
     class Nodo{
         private int $idNodo;
         private float $rango;
-        private Actividad $actividad;
 
-        public function __construct($idNodo, $rango, $actividad) {
+        public function __construct($idNodo, $rango) {
             $this->idNodo = $idNodo;
             $this->rango = $rango;
-            $this->actividad = new Actividad($actividad->getIdActividad(), $actividad->getNombreActividad());
         }
 
         function __destruct(){}
 
         public function nodoJSON(): array
         {
-            return array("idNodo" => $this->getIdNodo(), "rangoNodo" => $this->getRango(), "actividad" => $this->actividad->actividadJSON());
+            return array("idNodo" => $this->getIdNodo(), "rangoNodo" => $this->getRango());
         }
 
         /**
@@ -57,29 +55,9 @@
                 return $this;
         }
 
-        /**
-         * Get the value of actividad
-         */ 
-        public function getActividad()
-        {
-                return $this->actividad;
-        }
-
-        /**
-         * Set the value of actividad
-         *
-         * @return  self
-         */ 
-        public function setActividad($actividad)
-        {
-                $this->actividad = $actividad;
-
-                return $this;
-        }
-
         public function toString(): string
         {
-            return " IDNodo: ". $this->getIdNodo().", Rango: ". $this->getRango()." Actividad: " .$this->actividad->toString();
+            return " IDNodo: ". $this->getIdNodo().", Rango: ". $this->getRango();
         }
     }
 ?>
