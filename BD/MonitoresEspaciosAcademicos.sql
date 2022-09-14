@@ -43,29 +43,22 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `MonitoresEspaciosAcademicos`.`Actividad`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `MonitoresEspaciosAcademicos`.`Actividad` (
-  `idActividad` INT NOT NULL AUTO_INCREMENT,
-  `tipoActividad` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`idActividad`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `MonitoresEspaciosAcademicos`.`Nodo`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `MonitoresEspaciosAcademicos`.`Nodo` (
   `idNodo` INT NOT NULL AUTO_INCREMENT,
   `rangoNodo` FLOAT NOT NULL,
-  `Actividad_idActividad` INT NOT NULL,
-  PRIMARY KEY (`idNodo`),
-  INDEX `fk_Nodo_Actividad1_idx` (`Actividad_idActividad` ASC) VISIBLE,
-  CONSTRAINT `fk_Nodo_Actividad1`
-    FOREIGN KEY (`Actividad_idActividad`)
-    REFERENCES `MonitoresEspaciosAcademicos`.`Actividad` (`idActividad`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`idNodo`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `MonitoresEspaciosAcademicos`.`Actividad`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `MonitoresEspaciosAcademicos`.`Actividad` (
+  `idActividad` INT NOT NULL AUTO_INCREMENT,
+  `tipoActividad` VARCHAR(100) NULL,
+  PRIMARY KEY (`idActividad`))
 ENGINE = InnoDB;
 
 
@@ -93,6 +86,30 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `MonitoresEspaciosAcademicos`.`Actividad_has_Espacio_has_Nodo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `MonitoresEspaciosAcademicos`.`Actividad_has_Espacio_has_Nodo` (
+  `idAHEHN` INT NOT NULL AUTO_INCREMENT,
+  `Actividad_idActividad` INT NOT NULL,
+  `Espacio_has_Nodo_idEHN` INT NOT NULL,
+  `fechaLectura` DATETIME NOT NULL,
+  INDEX `fk_Actividad_has_Espacio_has_Nodo_Espacio_has_Nodo1_idx` (`Espacio_has_Nodo_idEHN` ASC) VISIBLE,
+  INDEX `fk_Actividad_has_Espacio_has_Nodo_Actividad1_idx` (`Actividad_idActividad` ASC) VISIBLE,
+  PRIMARY KEY (`idAHEHN`),
+  CONSTRAINT `fk_Actividad_has_Espacio_has_Nodo_Actividad1`
+    FOREIGN KEY (`Actividad_idActividad`)
+    REFERENCES `MonitoresEspaciosAcademicos`.`Actividad` (`idActividad`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Actividad_has_Espacio_has_Nodo_Espacio_has_Nodo1`
+    FOREIGN KEY (`Espacio_has_Nodo_idEHN`)
+    REFERENCES `MonitoresEspaciosAcademicos`.`Espacio_has_Nodo` (`idEHN`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `MonitoresEspaciosAcademicos`.`LecturaNodo`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `MonitoresEspaciosAcademicos`.`LecturaNodo` (
@@ -100,26 +117,34 @@ CREATE TABLE IF NOT EXISTS `MonitoresEspaciosAcademicos`.`LecturaNodo` (
   `codicionLuz` FLOAT NOT NULL,
   `humedad` FLOAT NOT NULL,
   `temperatura` FLOAT NOT NULL,
-  `duracionActividad` TIME NOT NULL,
-  `Espacio_has_Nodo_idEHN` INT NOT NULL,
+  `Actividad_has_Espacio_has_Nodo_idAHEHN` INT NOT NULL,
   PRIMARY KEY (`idLecturaNodo`),
-  INDEX `fk_LecturaNodo_Espacio_has_Nodo1_idx` (`Espacio_has_Nodo_idEHN` ASC) VISIBLE,
-  CONSTRAINT `fk_LecturaNodo_Espacio_has_Nodo1`
-    FOREIGN KEY (`Espacio_has_Nodo_idEHN`)
-    REFERENCES `MonitoresEspaciosAcademicos`.`Espacio_has_Nodo` (`idEHN`)
+  INDEX `fk_LecturaNodo_Actividad_has_Espacio_has_Nodo1_idx` (`Actividad_has_Espacio_has_Nodo_idAHEHN` ASC) VISIBLE,
+  CONSTRAINT `fk_LecturaNodo_Actividad_has_Espacio_has_Nodo1`
+    FOREIGN KEY (`Actividad_has_Espacio_has_Nodo_idAHEHN`)
+    REFERENCES `MonitoresEspaciosAcademicos`.`Actividad_has_Espacio_has_Nodo` (`idAHEHN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
+INSERT INTO actividad(actividad.tipoActividad) VALUES ("Preparacion de clase"), ("Asesoria"), ("Redaccion de documentos");
 
-INSERT INTO actividad(actividad.tipoActividad) VALUES ("Asesoria"), ("Redaccion de documentos");
+INSERT INTO edificio(edificio.nombreEdificio) VALUES ("A"), ("B"), ("C"), ("D");
 
-DROP VIEW IF EXISTS Nodo_Actividad;
-CREATE VIEW Nodo_Actividad AS SELECT n.idNodo, n.rangoNodo, a.idActividad, a.tipoActividad 
-	FROM nodo n INNER JOIN actividad a ON n.Actividad_idActividad = a.idActividad;
+INSERT INTO nodo(nodo.rangoNodo) VALUES (10), (9), (8), (7), (6);
+
+INSERT INTO espacio(espacio.numeroEspacio, espacio.Edificio_idEdificio) VALUES (12, 1), (157, 2), (47, 4);
+
+INSERT INTO espacio_has_nodo(espacio_has_nodo.Espacio_idEspacio, espacio_has_nodo.Nodo_idNodo) 
+	VALUES (1, 1), (1, 3), (1, 4);
     
-SELECT * FROM nodo_actividad;
+INSERT INTO espacio_has_nodo(espacio_has_nodo.Espacio_idEspacio, espacio_has_nodo.Nodo_idNodo) 
+	VALUES (2, 2), (2, 4), (2, 5);
+
+INSERT INTO espacio_has_nodo(espacio_has_nodo.Espacio_idEspacio, espacio_has_nodo.Nodo_idNodo) 
+	VALUES (3, 1), (3, 2), (3, 5);
