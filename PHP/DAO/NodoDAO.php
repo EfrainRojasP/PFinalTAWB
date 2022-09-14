@@ -13,10 +13,9 @@ class NodoDAO{
 
     public function insertarNodo($nodo): void
     {
-        $stm =  $this->conexion->prepare("INSERT INTO nodo(rangoNodo, Actividad_idActividad) VALUES (?, ?)");
+        $stm =  $this->conexion->prepare("INSERT INTO nodo(rangoNodo) VALUES (?)");
         $rango = $nodo->getRango();
-        $actividad = $nodo->getActividad()->getIdActividad();
-        $stm->bind_param("ii", $rango, $actividad);
+        $stm->bind_param("d", $rango);
         $stm->execute();
         $stm->close();
     }
@@ -24,11 +23,10 @@ class NodoDAO{
 
     public function buscarNodo($idNodo): Nodo
     {
-        $sql = "SELECT * FROM nodo_actividad WHERE idNodo = $idNodo";
+        $sql = "SELECT * FROM nodo WHERE idNodo = $idNodo";
         $result = $this->conexion->query($sql);
         $row = $result->fetch_assoc();
-        $actividad = new Actividad($row['idActividad'], $row['tipoActividad']);
-        $nodo = new Nodo($row["idNodo"], $row["rangoNodo"], $actividad);
+        $nodo = new Nodo($row["idNodo"], $row["rangoNodo"]);
         $result->close();
         return $nodo;
     }
@@ -36,11 +34,10 @@ class NodoDAO{
     public function consultarNodos(): array
     {
         $nodos = array();
-        $sql = "SELECT * FROM nodo_actividad";
+        $sql = "SELECT * FROM nodo";
         $result = $this->conexion->query($sql);
         while ($row = $result->fetch_assoc()) {
-			$actividad = new Actividad($row['idActividad'], $row['tipoActividad']);
-			$nodo = new Nodo($row["idNodo"], $row["rangoNodo"], $actividad);
+			$nodo = new Nodo($row["idNodo"], $row["rangoNodo"]);
 			array_push($nodos, $nodo);
 		}
 		$result->close();
