@@ -132,6 +132,26 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
+--
+-- Vista de los espacios con sus respenctivos edificios
+--
+DROP VIEW IF EXISTS espacio_edificio;
+CREATE VIEW espacio_edificio AS SELECT esp.idEspacio, esp.numeroEspacio, edi.idEdificio, edi.nombreEdificio FROM monitoresespaciosacademicos.espacio esp 
+	INNER JOIN monitoresespaciosacademicos.edificio edi
+		ON esp.Edificio_idEdificio = edi.idEdificio;
+        
+--
+	-- Vista de los espacios con sus respectivos nodos
+--
+DROP VIEW IF EXISTS espacio_nodo;        
+CREATE VIEW espacio_nodo AS SELECT esp.idEspacio, nodo.idNodo, nodo.rangoNodo FROM monitoresespaciosacademicos.espacio esp 
+	INNER JOIN monitoresespaciosacademicos.espacio_has_nodo esh
+		ON esp.idEspacio = esh.Espacio_idEspacio
+	INNER JOIN monitoresespaciosacademicos.nodo nodo
+		ON nodo.idNodo = esh.Nodo_idNodo;
+
+SELECT * FROM espacio_nodo WHERE idEspacio = 2;
+
 INSERT INTO actividad(actividad.tipoActividad) VALUES ("Preparacion de clase"), ("Asesoria"), ("Redaccion de documentos");
 
 INSERT INTO edificio(edificio.nombreEdificio) VALUES ("A"), ("B"), ("C"), ("D");
