@@ -81,11 +81,9 @@ class EspacioDAO
         $sql = "SELECT * FROM espacio_nodo WHERE idEspacio= $idEspacio";
         $result = $this->conexion->query($sql);
         while($row = $result->fetch_assoc()){
-            echo "IDN : ".$row["idNodo"]. " Rango: ".$row["rangoNodo"]."\n";
             $nodo = new Nodo($row["idNodo"], $row["rangoNodo"]);
             array_push($nodos, $nodo);
         }
-        //echo json_encode($nodos);
         $result->close();
         return $nodos;
     }
