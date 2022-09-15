@@ -1,24 +1,27 @@
-<?php 
+<?php
 
-class Espacio{
+class Espacio
+{
     private int $idEspacio;
     private int $numEspacio;
     private Edificio $edificio;
     private $nodos = array();
 
-    public function __construct($idEspacio, $numEspacio, $edificio, $nodos) {
+    public function __construct($idEspacio, $numEspacio, $edificio, $nodos)
+    {
         $this->idEspacio = $idEspacio;
         $this->numEspacio = $numEspacio;
-        $this->edificio= new Edificio($edificio->getIdEdificio(),$edificio->getNombre());
+        $this->edificio = new Edificio($edificio->getIdEdificio(), $edificio->getNombre());
         $this->nodos = $nodos;
     }
 
-    function __destruct(){
+    function __destruct()
+    {
     }
 
     /**
      * Get the value of idEspacio
-     */ 
+     */
     public function getIdEspacio()
     {
         return $this->idEspacio;
@@ -28,7 +31,7 @@ class Espacio{
      * Set the value of idEspacio
      *
      * @return  self
-     */ 
+     */
     public function setIdEspacio($idEspacio)
     {
         $this->idEspacio = $idEspacio;
@@ -38,7 +41,7 @@ class Espacio{
 
     /**
      * Get the value of numEspacio
-     */ 
+     */
     public function getNumEspacio()
     {
         return $this->numEspacio;
@@ -48,7 +51,7 @@ class Espacio{
      * Set the value of numEspacio
      *
      * @return  self
-     */ 
+     */
     public function setNumEspacio($numEspacio)
     {
         $this->numEspacio = $numEspacio;
@@ -58,7 +61,7 @@ class Espacio{
 
     /**
      * Get the value of edificio
-     */ 
+     */
     public function getEdificio()
     {
         return $this->edificio;
@@ -68,7 +71,7 @@ class Espacio{
      * Set the value of edificio
      *
      * @return  self
-     */ 
+     */
     public function setEdificio($edificio)
     {
         $this->edificio = $edificio;
@@ -78,8 +81,8 @@ class Espacio{
 
     /**
      * Get the value of nodos
-     */ 
-    public function getNodos()
+     */
+    public function getNodos(): array
     {
         return $this->nodos;
     }
@@ -88,7 +91,7 @@ class Espacio{
      * Set the value of nodos
      *
      * @return  self
-     */ 
+     */
     public function setNodos($nodos)
     {
         $this->nodos = $nodos;
@@ -98,20 +101,21 @@ class Espacio{
 
 
     public function espacioJSON(): array
-    {
-        return array("IdEspacio" => $this->idEspacio, "NumEspacio" => $this->numEspacio, "Edificio" => $this->edificio->edificioJSON(), "Nodos" => $this->nodos->nodoJSON());
+    {   
+        $arrNodoJSON = array();
+        foreach ($this->nodos as $nodo) {
+            array_push($arrNodoJSON, $nodo->nodoJSON());
+        }
+        return array("IdEspacio" => $this->idEspacio, "NumEspacio" => $this->numEspacio, "Edificio" => $this->edificio->edificioJSON(), "Nodos" => $arrNodoJSON);
     }
 
     public function toString(): string
     {
-        return "IdEspacio: ".$this->idEspacio.
-                " NumEspacio: " .$this->numEspacio.
-                " Edificio: ".$this->edificio->toString().
-                " Nodos: ". $this->nodos->toString();
+        return "IdEspacio: " . $this->idEspacio .
+            " NumEspacio: " . $this->numEspacio .
+            " Edificio: " . $this->edificio->toString() .
+            " Nodos: " . $this->nodos->toString();
     }
-
-
-    
 }
 
 ?>
