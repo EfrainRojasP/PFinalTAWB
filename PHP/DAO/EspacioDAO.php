@@ -65,6 +65,22 @@ class EspacioDAO
         return $espacios;
     }
 
+    public function consultarEHN(): array
+    {
+        $espacios = array();
+        $sql = "SELECT * FROM espacio_edificio_nodo";
+        $result = $this->conexion->query($sql);
+        while($row = $result->fetch_assoc()){
+            $edificio = new Edificio($row["idEdificio"], $row["nombreEdificio"]);
+            $nodos = array(new Nodo($row["idNodo"], $row["rangoNodo"]));
+            $espacio = new Espacio($row["idEHN"], $row["numeroEspacio"], $edificio, $nodos);
+            array_push($espacios, $espacio);
+        }
+        
+        $result->close();
+        return $espacios;
+    }
+
     public function idUltimoEspacio(): int
     {
         $sql = "SELECT max(idEspacio) AS idEspacio FROM espacio";
@@ -87,6 +103,7 @@ class EspacioDAO
         $result->close();
         return $nodos;
     }
+
 
 }
 ?>
