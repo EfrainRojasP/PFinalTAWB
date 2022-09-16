@@ -24,10 +24,15 @@
     <p>Humedad: <span id="humedad"> 0 </span> % </p>
     <p>Temperatura: <span id="temperatura"> 1.1 </span> °C </p>
     <p>Fecha de lectura: <span id="fechaLectura">YYYY-MM-DD HH:MM:SS</span> </p>
+    <p> Duracion actividad <span id="horas">00</span>:<span id="minutos">00</span>:<span id="seg">00</span></p>
     <button id="start">Iniciar Lectura</button><button id="stop">Parar Lectura</button>
     <br>
     <br>
-    <button id="agregarLectura">Agregar lectura</button>
+    <button id="verPromedio">Ver promedio</button>
+    <br>
+    <table id="tabla" border=""></table>
+    <script src="./JS/Cargadores/CargarCronometro.js"></script>
+    <script src="./JS/Cargadores/CargarTabla.js"></script>
     <script src="./JS/Cargadores/CargarActividad.js"></script>
     <script src="./JS/Cargadores/CargarEspacio.js"></script>
     <script src="./JS/Eventos/eventosLecturaNodo.js"></script>
