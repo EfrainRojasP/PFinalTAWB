@@ -35,6 +35,17 @@ class LecturaDAO{
         $stm->close();
     }
 
+    public function tablaPromedio($idAHEHN): Lectura
+    {
+        $sql = "SELECT * FROM lecturaPromedio WHERE Actividad_has_Espacio_has_Nodo_idAHEHN = $idAHEHN";
+        $result = $this->conexion->query($sql);
+        $row = $result->fetch_assoc();
+        $esp = new Espacio(0, 0, new Edificio(0, ""), array(new Nodo(0, 0)));
+        $act = new Actividad(0, "");
+        $lect = new Lectura(0, $row["PLuz"], $row["PHum"], $row["PTem"], $row["PHoras"], $esp, $act, 0);
+        return $lect;
+    }
+
     public function idUltimaActividadHasEsp($lectura): int
     {
         $idActividad = $lectura->getActividad()->getIdActividad();
