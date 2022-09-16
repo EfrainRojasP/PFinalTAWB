@@ -7,14 +7,17 @@ class Lectura{
     private string $fechaLectura;
     private Espacio $espacio;
     private Actividad $actividad;
+    private int $idAHEHN;
 
-    public function __construct($condLuz, $hum, $temp, $duraAct, $esp, $actividad) {
+    public function __construct($idLectura,$condLuz, $hum, $temp, $duraAct, $esp, $actividad, $idAHEHN) {
+        $this->idLectura = $idLectura;
         $this->condicionLuz = $condLuz;
         $this->humedad = $hum;
         $this->temp =$temp;
         $this->fechaLectura = $duraAct;
         $this->espacio = new Espacio($esp->getIdEspacio(), $esp->getNumEspacio(), $esp->getEdificio(), $esp->getNodos());
         $this->actividad = new Actividad($actividad->getIdActividad(), $actividad->getNombreActividad());
+        $this->idAHEHN = $idAHEHN;
     }
     
     public function lecturaJSON(): array
@@ -163,6 +166,27 @@ class Lectura{
         return $this;
     }
 
+
+    /**
+     * Get the value of idAHEHN
+     */ 
+    public function getIdAHEHN()
+    {
+        return $this->idAHEHN;
+    }
+
+    /**
+     * Set the value of idAHEHN
+     *
+     * @return  self
+     */ 
+    public function setIdAHEHN($idAHEHN)
+    {
+        $this->idAHEHN = $idAHEHN;
+
+        return $this;
+    }
+
     public function toString(): string
     {
         return "idLectura: ".$this->idLectura.
@@ -173,9 +197,6 @@ class Lectura{
                 " Actividad: ".$this->actividad->toString();
     }
 
-   
-
-    
 }
 
 ?>
