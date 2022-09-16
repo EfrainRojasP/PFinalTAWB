@@ -1,4 +1,4 @@
-async function fetchCargarActividadNodo() {
+async function fetchCargarEspacios() {
     let req = await fetch("/PFinal/PHP/Controlador/CargarEspacio.php", {
         method: "POST"
     })
@@ -6,16 +6,19 @@ async function fetchCargarActividadNodo() {
     return res;
 }
 
-function cargarActividades(obj){
+function cargarEspacio(obj){
     const selecEsp = document.getElementById("espacio");
-    const option = new Option(obj.NumEspacio, obj.IdEspacio);
+    const option = new Option("Numero Espacio: " + obj.NumEspacio + 
+                               " | Nombre Edificio: " + obj["Edificio"].nombreEd +
+                               " | Rango del nodo: " + obj["Nodos"][0].rangoNodo, 
+                              obj.IdEspacio);
     selecEsp.appendChild(option);
 }
 
 function cargar() {
-    fetchCargarActividadNodo().then(res => {
+    fetchCargarEspacios().then(res => {
         res.forEach(element => {
-            cargarActividades(element);
+            cargarEspacio(element);
         });
     })
 }
