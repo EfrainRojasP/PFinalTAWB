@@ -140,8 +140,6 @@ CREATE VIEW espacio_edificio AS SELECT esp.idEspacio, esp.numeroEspacio, edi.idE
 	INNER JOIN monitoresespaciosacademicos.edificio edi
 		ON esp.Edificio_idEdificio = edi.idEdificio;
 
-SELECT * FROM espacio_edificio WHERE idEspacio = 1;
-
 --
 	-- Vista de los espacios con sus respectivos nodos
 --
@@ -167,7 +165,15 @@ CREATE VIEW espacio_edificio_nodo AS
 		INNER JOIN monitoresespaciosacademicos.edificio edi
 			ON esp.Edificio_idEdificio = edi.idEdificio;
 
-SELECT * FROM espacio_edificio_nodo;
+--
+	-- Vista para el promedio
+--
+DROP VIEW IF EXISTS lecturaPromedio;
+CREATE VIEW lecturaPromedio AS 
+	SELECT TRUNCATE(AVG(codicionLuz), 2) AS PLuz, TRUNCATE(AVG(humedad), 2) AS PHum, TRUNCATE(AVG(temperatura), 2) AS PTem, 
+		TRUNCATE(COUNT(Actividad_has_Espacio_has_Nodo_idAHEHN) / 10, 2) AS PHoras, Actividad_has_Espacio_has_Nodo_idAHEHN
+		FROM lecturanodo GROUP BY  Actividad_has_Espacio_has_Nodo_idAHEHN;
+
 
 INSERT INTO actividad(actividad.tipoActividad) VALUES ("Preparacion de clase"), ("Asesoria"), ("Redaccion de documentos");
 
