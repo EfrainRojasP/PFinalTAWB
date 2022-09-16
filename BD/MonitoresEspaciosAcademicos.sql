@@ -139,18 +139,35 @@ DROP VIEW IF EXISTS espacio_edificio;
 CREATE VIEW espacio_edificio AS SELECT esp.idEspacio, esp.numeroEspacio, edi.idEdificio, edi.nombreEdificio FROM monitoresespaciosacademicos.espacio esp 
 	INNER JOIN monitoresespaciosacademicos.edificio edi
 		ON esp.Edificio_idEdificio = edi.idEdificio;
-        
+
+SELECT * FROM espacio_edificio WHERE idEspacio = 1;
+
 --
 	-- Vista de los espacios con sus respectivos nodos
 --
 DROP VIEW IF EXISTS espacio_nodo;        
-CREATE VIEW espacio_nodo AS SELECT esp.idEspacio, nodo.idNodo, nodo.rangoNodo FROM monitoresespaciosacademicos.espacio esp 
+CREATE VIEW espacio_nodo AS SELECT esh.idEHN, esp.idEspacio, nodo.idNodo, nodo.rangoNodo FROM monitoresespaciosacademicos.espacio esp 
 	INNER JOIN monitoresespaciosacademicos.espacio_has_nodo esh
 		ON esp.idEspacio = esh.Espacio_idEspacio
 	INNER JOIN monitoresespaciosacademicos.nodo nodo
 		ON nodo.idNodo = esh.Nodo_idNodo;
 
-SELECT * FROM espacio_nodo WHERE idEspacio = 2;
+
+--
+	-- Vista que da el nodo y el edificio de cada espacio
+--
+
+DROP VIEW IF EXISTS espacio_edificio_nodo;
+CREATE VIEW espacio_edificio_nodo AS 
+	SELECT esh.idEHN, esp.idEspacio, esp.numeroEspacio, edi.idEdificio, edi.nombreEdificio, nodo.idNodo, nodo.rangoNodo FROM monitoresespaciosacademicos.espacio esp 
+		INNER JOIN monitoresespaciosacademicos.espacio_has_nodo esh
+			ON esp.idEspacio = esh.Espacio_idEspacio
+		INNER JOIN monitoresespaciosacademicos.nodo nodo
+			ON nodo.idNodo = esh.Nodo_idNodo
+		INNER JOIN monitoresespaciosacademicos.edificio edi
+			ON esp.Edificio_idEdificio = edi.idEdificio;
+
+SELECT * FROM espacio_edificio_nodo;
 
 INSERT INTO actividad(actividad.tipoActividad) VALUES ("Preparacion de clase"), ("Asesoria"), ("Redaccion de documentos");
 
