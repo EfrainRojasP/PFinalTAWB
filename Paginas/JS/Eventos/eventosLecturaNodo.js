@@ -4,7 +4,7 @@ const temp = document.getElementById("temperatura");
 const start = document.getElementById("start");
 const detener = document.getElementById("stop");
 const fechaLectura = document.getElementById("fechaLectura");
-const agregar = document.getElementById("agregarLectura");
+const agregar = document.getElementById("verPromedio");
 const act = document.getElementById("actividad");
 const esp = document.getElementById("espacio");
 
@@ -144,6 +144,7 @@ start.addEventListener("click", async () => {
         detener.disabled = false;
         iniFechaLectura();
         idAHENH = await fectchInsertarAHEHN(objetoAHEHN());
+        window.localStorage.setItem("idAHENH", idAHENH);
         simulacion = setInterval(iniciarSimulacion, 1000);
     } catch (error) {
         alert(error)
