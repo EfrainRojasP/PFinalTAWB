@@ -18,6 +18,56 @@ agregar.disabled = true;
 detener.disabled = true;
 start.disabled = true;
 
+let idAHENH;
+
+async function fectchInsertarAHEHN(obj) {
+    let req = await fetch("/PFinal/PHP/Controlador/InsertarAHEHN.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json; charset=UTF-8"
+        },
+        body: JSON.stringify(obj)
+    })
+    const res = await req.text();
+    if (res.includes("<b>")) {
+        console.log(res);
+        throw new Error('ERROR AL INSERTAR LA LECTURA, VUELVA A INTERLO MAS TARDE \n' + res);
+    }
+    return parseInt(res);
+}
+
+async function fetchInsertarLectura(obj) {
+    let req = await fetch("/PFinal/PHP/Controlador/insertarLectura.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json; charset=UTF-8"
+        },
+        body: JSON.stringify(obj)
+    })
+    const res = await req.text();
+    if (res.includes("<b>")) {
+        throw new Error('ERROR AL INSERTAR LA LECTURA, VUELVA A INTERLO MAS TARDE \n' + res);
+    }
+    return res;
+}
+
+function objetoAHEHN() {
+    return {
+        idActividad: act.selectedIndex,
+        idEHN: esp.selectedIndex,
+        fechaLectura: fechaLectura.textContent
+    }
+}
+
+function objetoLectura() {
+    return {
+        condLuz: parseFloat(luz.textContent),
+        hum: parseFloat(humedad.textContent),
+        temp: parseFloat(temp.textContent),
+        idAHENH: idAHENH
+    }
+}
+
 function fechaMYSQL(fecha, hora) {
     const fechaDividida = fecha.split("/");
     const year = fechaDividida[2];
@@ -44,10 +94,17 @@ function medidasAleatoriasDecimal(max, min, decimales) {
     return (Math.random() * (max - min) + min).toFixed(decimales)
 }
 
-function iniciarSimulacion() {
-    luz.textContent = medidasAleatorias(15, 100);
-    humedad.textContent = medidasAleatorias(49, 101);
-    temp.textContent = medidasAleatoriasDecimal(0, 48, 2);
+async function iniciarSimulacion() {
+    try {
+        luz.textContent = medidasAleatorias(15, 100);
+        humedad.textContent = medidasAleatorias(49, 101);
+        temp.textContent = medidasAleatoriasDecimal(0, 48, 2);
+        const res = await fetchInsertarLectura(objetoLectura());
+    } catch (error) {
+        clearInterval(simulacion);
+        simulacion = null;
+        alert(error);
+    }
     console.log("LUZ ", luz.textContent, " hum ", humedad.textContent, " temp ", temp.textContent);
 }
 
@@ -81,11 +138,18 @@ act.addEventListener("change", () => {
     verificar(indexAct, indexEsp);
 });
 
-start.addEventListener("click", () => {
-    start.disabled = true;
-    detener.disabled = false;
-    iniFechaLectura();
-    simulacion = setInterval(iniciarSimulacion, 1000);
+start.addEventListener("click", async () => {
+    try {
+        start.disabled = true;
+        detener.disabled = false;
+        iniFechaLectura();
+        idAHENH = await fectchInsertarAHEHN(objetoAHEHN());
+        simulacion = setInterval(iniciarSimulacion, 1000);
+    } catch (error) {
+        alert(error)
+        return;
+    }
+
 })
 
 detener.addEventListener("click", () => {
