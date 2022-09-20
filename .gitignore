@@ -1,0 +1,5 @@
+Diagramas/*.dia~
+Diagramas/*.dia
+BD/Modelo/*.mwb
+*.dia
+*.dia~
